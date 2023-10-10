@@ -44,22 +44,22 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         try {
             creds = new ObjectMapper().readValue(request.getInputStream(), UserAuthAttemptDto.class);
         } catch (JsonParseException e) {
-                e.printStackTrace();
-            } catch (JsonMappingException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JsonMappingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        if (creds ==null) {
+        if (creds == null) {
             throw new UserNotFoundException("Invalid credentials");
         }
         User user = userRepository.findByEmail(creds.getUsername()).orElseThrow(UserNotFoundException::new);
         UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());
-        if (!passwordEncoder.matches(creds.getPassword(),userDetails.getPassword())) {
+        if (!passwordEncoder.matches(creds.getPassword(), userDetails.getPassword())) {
             throw new PasswordsDoNotMatchException();
         }
         return authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(userDetails.getUsername(),creds.getPassword(),userDetails.getAuthorities()));
+                new UsernamePasswordAuthenticationToken(userDetails.getUsername(), creds.getPassword(), userDetails.getAuthorities()));
     }
 
     @Override
@@ -67,9 +67,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         User userDetails = (User) authResult.getPrincipal();
         String token = JWT.create()
                 .withSubject(new ObjectMapper().writeValueAsString(UserDetailsDto.of(userDetails)))
-                .withExpiresAt(new Date(System.currentTimeMillis()+ JwtAuthConstants.EXPIRATION_TIME))
+                .withExpiresAt(new Date(System.currentTimeMillis() + JwtAuthConstants.EXPIRATION_TIME))
                 .sign(Algorithm.HMAC256(JwtAuthConstants.SECRET.getBytes()));
-        response.addHeader(JwtAuthConstants.HEADER_STRING,JwtAuthConstants.TOKEN_PREFIX+token);
+        response.addHeader(JwtAuthConstants.HEADER_STRING, JwtAuthConstants.TOKEN_PREFIX + token);
         response.getWriter().append(token);
     }
 }

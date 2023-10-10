@@ -2,7 +2,6 @@ package com.example.petshopbackend.service.impl;
 
 import com.example.petshopbackend.exceptions.RequiredPropertyException;
 import com.example.petshopbackend.model.User;
-import com.example.petshopbackend.model.dto.UserAuthDto;
 import com.example.petshopbackend.model.dto.UserProfileDto;
 import com.example.petshopbackend.model.dto.UserRegisterDto;
 import com.example.petshopbackend.repository.UserRepository;
@@ -38,10 +37,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @PreAuthorize("isAuthenticated()")
-    public UserAuthDto getAuthUser() {
-        String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = userRepository.findById(username).orElseThrow(UserNotFoundException::new);
-        return UserAuthDto.of(user);
+    public UserProfileDto getAuthUser() {
+        String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+        return UserProfileDto.of(user);
     }
 
     @Override

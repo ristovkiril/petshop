@@ -22,8 +22,6 @@ public class UserProfileDto {
 
     public BigDecimal budged;
 
-    private boolean enabled = false;
-
     public UserProfileDto(){
 
     }
@@ -34,7 +32,7 @@ public class UserProfileDto {
         dt.setEmail(user.getEmail());
         dt.setName(user.getFirstName());
         dt.setLastname(user.getLastName());
-        dt.setEnabled(user.isEnabled());
+        dt.setBudged(user.getBudget());
         return dt;
     }
 }

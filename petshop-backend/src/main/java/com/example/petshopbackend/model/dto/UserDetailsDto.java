@@ -12,7 +12,6 @@ import java.util.List;
 public class UserDetailsDto {
     private String username;
 
-
     public static UserDetailsDto of(User user) {
         UserDetailsDto details = new UserDetailsDto();
         details.username = user.getUsername();
