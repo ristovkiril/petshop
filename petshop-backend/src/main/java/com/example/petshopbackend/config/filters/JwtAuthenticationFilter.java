@@ -37,7 +37,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     private final UserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
 
-
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         UserAuthAttemptDto creds = null;

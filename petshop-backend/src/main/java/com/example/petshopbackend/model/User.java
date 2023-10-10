@@ -24,7 +24,7 @@ public class User implements UserDetails {
     @JsonIgnore
     private String password;
 
-    private BigDecimal budget;
+    private BigDecimal budget = BigDecimal.ZERO;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
