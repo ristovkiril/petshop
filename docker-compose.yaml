@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  # Spring Boot Application
+  spring-app:
+    image: petshop-backend:latest
+    container_name: spring-app
+    ports:
+      - "8080:8080"  # Adjust the port as needed
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/petshop
+    depends_on:
+      - mysql
+  # MySQL Database
+  mysql:
+    image: mysql:5.7
+    container_name: petshop-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: p@ssw0rd
+      MYSQL_DATABASE: petshop
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./data:/var/lib/mysql
+
+
