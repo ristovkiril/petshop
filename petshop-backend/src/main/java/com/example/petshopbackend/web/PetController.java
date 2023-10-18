@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(path = "/api/pet", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
 @AllArgsConstructor
-@PreAuthorize("isAuthenticated()")
 public class PetController {
     private final PetService petService;
 
@@ -27,21 +26,25 @@ public class PetController {
     }
 
     @PostMapping
+    @PreAuthorize("isAuthenticated()")
     public Pet create(@RequestBody PetCreationDto petCreationDto) {
         return petService.createPet(petCreationDto);
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
     public Pet edit(@PathVariable Long id, @RequestBody PetCreationDto petCreationDto) {
         return petService.edit(id, petCreationDto);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
     public void delete(@PathVariable Long id) {
         petService.deletePet(id);
     }
 
     @PatchMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
     public Pet buyPet(@PathVariable Long id) {
         return petService.buyPet(id);
     }

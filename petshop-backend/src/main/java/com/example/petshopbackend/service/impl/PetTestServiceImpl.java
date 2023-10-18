@@ -9,16 +9,13 @@ import com.example.petshopbackend.model.enums.PetType;
 import com.example.petshopbackend.repository.HistoryLogRepository;
 import com.example.petshopbackend.repository.PetRepository;
 import com.example.petshopbackend.repository.UserRepository;
-import com.example.petshopbackend.service.PetService;
 import com.example.petshopbackend.service.PetTestService;
 import com.example.petshopbackend.utils.MockService;
-import com.mysql.cj.log.Log;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -65,9 +62,7 @@ public class PetTestServiceImpl implements PetTestService {
                 try {
                     buyPet(pet, user);
                     countSuccess++;
-                } catch (PetAlreadyHasOwnerException petAlreadyHasOwnerException) {
-                    countDenied++;
-                } catch (InsufficientBudgetException insufficientBudgetException) {
+                } catch (Exception exception) {
                     countDenied++;
                 }
             }
