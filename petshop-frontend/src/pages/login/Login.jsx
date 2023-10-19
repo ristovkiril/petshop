@@ -1,14 +1,15 @@
-import React from "react";
+import React, {useContext} from "react";
 import {Box, Button, Stack, TextField, Typography} from "@mui/material";
 import logo from "/pet-logo.jpg"
-import {grey} from "@mui/material/colors";
+import {deepPurple, grey} from "@mui/material/colors";
 import {Link} from "react-router-dom";
 import * as yup from 'yup';
 import {useFormik} from "formik";
 import {IconChevronRight} from "@tabler/icons-react";
+import {SignInContext} from "../../context/SignInContext.jsx";
 
 const validationSchema = yup.object({
-    email: yup
+    username: yup
         .string('Enter your email')
         .email('Enter a valid email')
         .required('Email is required'),
@@ -19,14 +20,16 @@ const validationSchema = yup.object({
 });
 
 export const Login = () => {
+    const {onLogin} = useContext(SignInContext);
     const formik = useFormik({
         initialValues: {
-            email: 'foobar@example.com',
-            password: 'foobar',
+            username: 'admin@yahoo.com',
+            password: 'p@ssw0rd',
         },
         validationSchema: validationSchema,
-        onSubmit: (values) => {
-            alert(JSON.stringify(values, null, 2));
+        onSubmit: async (values) => {
+            console.log(values)
+            await onLogin(values)
         },
     });
 
@@ -46,7 +49,7 @@ export const Login = () => {
                 component={"form"}
                 onSubmit={formik.handleSubmit}
                 direction={"column"}
-                gap={1}
+                gap={2}
                 alignItems={"center"}
                 sx={{
                     borderRadius: '1rem',
@@ -59,18 +62,18 @@ export const Login = () => {
             >
                 <img src={logo} alt={'pet logo'} width={150} height={'auto'}/>
                 <Typography fontSize={30}>Welcome to Pet Shop</Typography>
-                <Typography fontSize={16}>Dont have account yet? <Link to={"/register"} style={{color: "#e57a31"}}>Sign up</Link></Typography>
+                <Typography fontSize={16}>Dont have account yet? <Link to={"/register"} style={{color: deepPurple[400]}}>Sign up</Link></Typography>
                 <TextField
                     label={"Email"}
                     type={"email"}
                     size={"small"}
                     fullWidth
                     InputProps={{ sx: {borderRadius: 6} }}
-                    value={formik.values.email}
+                    value={formik.values.username}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    error={formik.touched.email && Boolean(formik.errors.email)}
-                    helperText={formik.touched.email && formik.errors.email}
+                    error={formik.touched.username && Boolean(formik.errors.username)}
+                    helperText={formik.touched.username && formik.errors.username}
 
                 />
                 <TextField
@@ -90,13 +93,10 @@ export const Login = () => {
                     variant={"contained"}
                     fullWidth
                     type={"submit"}
+                    color={"secondary"}
                     sx={{
-                        bgcolor: "#e57a31",
                         color: "#FFF",
                         borderRadius: 5,
-                        "&:hover": {
-                            bgcolor: "#c96b2c",
-                        }
                     }}
                 >
                     Login <IconChevronRight size={15} />

@@ -53,8 +53,10 @@ export const SignInContextProvider = props => {
 
   const onLogin = async ({username, password}) => {
     try {
+      console.log(username, password)
       const response = await axios.post(`/login`, { username, password });
       const serviceToken = response.data;
+      console.log(response);
       localStorage.setItem(TOKEN, serviceToken);
 
       if (serviceToken) {

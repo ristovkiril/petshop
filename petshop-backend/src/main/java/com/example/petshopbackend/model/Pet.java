@@ -38,7 +38,7 @@ public class Pet {
     // The calculated price is automatically set to the 'price' field of the pet entity
     // during the pre-persistence stage before it is saved to the database.
     @PrePersist
-    private void calculatePrice() {
+    public void calculatePrice() {
         int ageInYears = Period.between(dateOfBirth, LocalDate.now()).getYears();
         BigDecimal basePrice = BigDecimal.valueOf(ageInYears);
 

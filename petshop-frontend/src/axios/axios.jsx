@@ -17,7 +17,7 @@ instance.interceptors.request.use(
     return config;
   },
   (error) => {
-    if (error.response.status === 403) {
+    if (error?.response?.status === 403) {
       localStorage.removeItem(TOKEN);
       window.location.href = '/login';
     }
@@ -28,7 +28,7 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
   (config) => config,
   (error) => {
-    if (error.response.status === 403) {
+    if (error?.response?.status === 403) {
       localStorage.removeItem(TOKEN);
       window.location.href = '/login';
     }

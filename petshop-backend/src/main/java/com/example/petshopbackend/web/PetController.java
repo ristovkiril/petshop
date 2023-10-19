@@ -43,7 +43,7 @@ public class PetController {
         petService.deletePet(id);
     }
 
-    @PatchMapping("/{id}")
+    @PostMapping("/{id}/buy")
     @PreAuthorize("isAuthenticated()")
     public Pet buyPet(@PathVariable Long id) {
         return petService.buyPet(id);

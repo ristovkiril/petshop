@@ -8,6 +8,8 @@ import {Login} from "./pages/login/Login.jsx";
 import {Register} from "./pages/register/Register.jsx";
 import {Home} from "./pages/home/Home.jsx";
 import {theme} from "./config/Theme";
+import 'react-toastify/dist/ReactToastify.css';
+
 
 function App() {
     const {isAuth} = useContext(SignInContext);

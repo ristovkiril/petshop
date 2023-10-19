@@ -23,7 +23,7 @@ export const MainLayout = ({children}) => {
                         {
                             isAuth ?
                                 <>
-                                    <Button component={NavLink} to={"/"} sx={{borderBottom: 2, borderRadius: 0, borderColor: "transparent"}} className={"nav-link"}>
+                                    <Button component={NavLink} to={"/my-pets"} sx={{borderBottom: 2, borderRadius: 0, borderColor: "transparent"}} className={"nav-link"}>
                                         My Pets
                                     </Button>
 
@@ -58,7 +58,7 @@ export const MainLayout = ({children}) => {
                     </Stack>
                 </Stack>
             </Toolbar>
-            <Box sx={{flex: 1, overflowY: "auto", px: 2}}>
+            <Box sx={{flex: 1, overflowY: "auto", mx: "auto", width: "100%"}}>
                 {children}
             </Box>
         </Stack>

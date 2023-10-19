@@ -58,6 +58,20 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+.pet-item:hover {
+  background: ghostwhite;
+}
+
+.pet-img {
+  border-top-right-radius: inherit;
+  border-top-left-radius: inherit;
+  mix-blend-mode: multiply;
+  margin-left: auto;
+  margin-right: auto;
+  align-self: center;
+  height: 150px;
+}
+
 .nav-link {
   color: #1a1a1a !important;
 }
