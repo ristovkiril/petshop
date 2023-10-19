@@ -1,12 +1,13 @@
 import React, {useContext} from "react";
 import {Link, NavLink} from "react-router-dom";
 import {SignInContext} from "../context/SignInContext.jsx";
-import {Box, Button, Stack, Toolbar} from "@mui/material";
+import {Avatar, Box, Button, IconButton, Stack, Toolbar} from "@mui/material";
 import logo from "/pet-logo.jpg"
-import {IconLogin, IconLogout} from "@tabler/icons-react";
+import {deepPurple} from "@mui/material/colors";
+import {IconPlus} from "@tabler/icons-react";
 
 export const MainLayout = ({children}) => {
-    const {isAuth} = useContext(SignInContext);
+    const {isAuth, currentUser} = useContext(SignInContext);
 
     return (
         <Stack direction={"column"} sx={{width: "100vw", height: "100dvh"}}>
@@ -35,9 +36,16 @@ export const MainLayout = ({children}) => {
                                             color: "#FFF !important"
                                         }}
                                     >
-                                        {/*<IconLogout style={{marginRight: 5}} />*/}
-                                        Sign out
+                                        <IconPlus size={15} style={{marginRight: 5}} />
+                                        Create Pet
                                     </Button>
+                                    <IconButton size={"small"} sx={{p: 0}} variant={"secondary"}>
+                                        <Avatar
+                                            sx={{bgcolor: deepPurple[100], color: deepPurple[400]}}
+                                        >
+                                            {currentUser?.name && currentUser?.lastname &&`${currentUser?.name[0]}${currentUser?.lastname[0]}`}
+                                        </Avatar>
+                                    </IconButton>
                                 </> :
                                 <>
                                     <Button

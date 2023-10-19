@@ -67,9 +67,15 @@ export const Filter = ({filterParams, setFilterParams}) => {
             />
             <TablePagination
                 component="div"
-                sx={{flex: 1}}
+                sx={{
+                    ".MuiToolbar-gutters": {p: 0, justifyContent: "flex-start"},
+                    ".MuiTablePagination-spacer": {display: "none"},
+                    width: {xs: "100%", md: "auto"},
+                    ml: {xs: 0, md: "auto"}
+                }}
                 count={filterParams?.totalElements}
                 page={filterParams?.page}
+
                 row
                 onPageChange={(e, newPage) => setFilterParams(prev => {
                     return {...prev, page: newPage}
