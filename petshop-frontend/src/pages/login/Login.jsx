@@ -28,7 +28,6 @@ export const Login = () => {
         },
         validationSchema: validationSchema,
         onSubmit: async (values) => {
-            console.log(values)
             await onLogin(values)
         },
     });

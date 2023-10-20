@@ -48,7 +48,6 @@ export const CreatePetModal = ({open, handleClose}) => {
         },
         validationSchema: validationSchema,
         onSubmit: async (values) => {
-            console.log(values)
             try{
                 const response = await axios.post("/api/pet/create", values)
                 toast.success(`${values.name} is added on list.`);

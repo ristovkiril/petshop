@@ -42,7 +42,7 @@ export const Home = () => {
                     const state = {...prev};
                     state.totalPages = response.data.totalPages;
                     state.totalElements = response.data.totalElements;
-                    console.log(state.page, state.totalPages);
+
                     if (state.totalPages <= state.page) {
                         state.page = 0
                     }

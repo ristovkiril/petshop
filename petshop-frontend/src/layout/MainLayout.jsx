@@ -16,12 +16,14 @@ import {
 } from "@mui/material";
 import logo from "/pet-logo.jpg"
 import {deepPurple} from "@mui/material/colors";
-import {IconLogout, IconPlus} from "@tabler/icons-react";
+import {IconLogout, IconMenu, IconPlus} from "@tabler/icons-react";
 import {CreatePetModal} from "./CreatePetModal.jsx";
+import {NavigationDrawer} from "./NavigationDrawer.jsx";
 
 export const MainLayout = ({children}) => {
     const {isAuth, currentUser, onLogout} = useContext(SignInContext);
     const [openCreateModal, setOpenCreateModal] = useState(false);
+    const [openDrawer, setOpenDrawer] = useState(false);
 
     return (
         <Stack direction={"column"} sx={{width: "100vw", height: "100dvh"}}>
@@ -29,13 +31,21 @@ export const MainLayout = ({children}) => {
                 open={openCreateModal}
                 handleClose={() => setOpenCreateModal(false)}
             />
+            <NavigationDrawer
+                open={openDrawer}
+                handleClose={() => setOpenDrawer(false)}
+                onLogout={onLogout}
+                currentUser={currentUser}
+                isAuth={isAuth}
+                openCreatePet={() => setOpenCreateModal(true)}
+            />
             <Toolbar>
                 <Stack direction={"row"} gap={2} alignItems={"center"} justifyContent={"space-between"}
                        sx={{width: "100%"}}>
                     <Button component={Link} to={"/"}>
                         <img src={logo} alt={'pet logo'} width={40} height={'auto'}/>
                     </Button>
-                    <Stack direction={"row"} gap={2} alignItems={"center"}>
+                    <Stack direction={"row"} gap={2} alignItems={"center"} sx={{display: {xs: "none", sm: "flex"} }}>
                         <Button component={NavLink} to={"/"}
                                 sx={{borderBottom: 2, borderRadius: 0, borderColor: "transparent"}}
                                 className={"nav-link"}>
@@ -81,6 +91,15 @@ export const MainLayout = ({children}) => {
                                 </>
                         }
                     </Stack>
+                    <Button
+                        onClick={() => setOpenDrawer(true)}
+                        sx={{
+                            color: "#1e1e1e",
+                            display: {xs: "flex", sm: "none"}
+                        }}
+                    >
+                        <IconMenu />
+                    </Button>
                 </Stack>
             </Toolbar>
             <Box sx={{flex: 1, overflowY: "auto", mx: "auto", width: "100%"}}>
