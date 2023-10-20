@@ -57,10 +57,10 @@ export const Home = () => {
     const onBuyNow = (pet) => {
         if (isAuth) {
             axios.post(`/api/pet/${pet?.id}/buy`)
-                .then(async (response) => {
+                .then((response) => {
                     toast.success("Congratulations you bought your pet!");
                     fetchData();
-                    await reloadUserData();
+                    reloadUserData();
                 })
                 .catch(err => {
                     console.log(err?.response?.data?.message || "Failed to buy new Pet");
