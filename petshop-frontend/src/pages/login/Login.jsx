@@ -67,6 +67,7 @@ export const Login = () => {
                     label={"Email"}
                     type={"email"}
                     size={"small"}
+                    name={"username"}
                     fullWidth
                     InputProps={{ sx: {borderRadius: 6} }}
                     value={formik.values.username}
@@ -80,6 +81,7 @@ export const Login = () => {
                     label={"Password"}
                     type={"password"}
                     size={"small"}
+                    name={"password"}
                     fullWidth
                     InputProps={{ sx: {borderRadius: 6} }}
                     value={formik.values.password}

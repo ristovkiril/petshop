@@ -73,14 +73,14 @@ export const SignInContextProvider = props => {
     }
   }
 
-  const onRegister = async ({username, email, password, name, lastname}) => {
+  const onRegister = async ({budged, email, password, name, lastname}) => {
     try {
       const response = await axios.post('/api/user', {
-        username,
         email,
         password,
         name,
-        lastname
+        lastname,
+        budged
       });
       navigate("/login");
     } catch (error) {
