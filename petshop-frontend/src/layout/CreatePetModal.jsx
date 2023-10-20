@@ -1,18 +1,12 @@
-import React, {useContext, useState} from "react";
-import {Button, Fade, IconButton, Stack, TextField} from "@mui/material";
-import Box from "@mui/material/Box";
+import React from "react";
+import {Button, Fade, FormControl, InputLabel, MenuItem, Select, Stack, TextField} from "@mui/material";
 import Typography from "@mui/material/Typography";
-import {
-    IconX
-} from "@tabler/icons-react";
 import Modal from "@mui/material/Modal";
-import {grey} from "@mui/material/colors";
 import {toast} from "react-toastify";
-import {Context as AppContext} from "../../context/AppContext";
-import {ProjectEntity} from "../../model/ModelData";
 import {PetType} from "../consts/PetType.js";
 import {useFormik} from "formik";
 import * as yup from "yup";
+import axios from "../axios/axios.jsx";
 
 const style = {
     position: 'absolute',
@@ -30,19 +24,17 @@ const style = {
     overflowY: "auto"
 };
 
-const validationSchema = yup.object({
-    name: yup
-        .string('Enter name')
-        .required('Name is required'),
-    description: yup.string.notRequired(),
-    type: yup
-        .string('Enter type')
-        .required('Type is required'),
-    dateOfBirth: yup
-        .date()
-        .required("Date of birth is required"),
-    rating: yup.number.notRequired("Enter rating")
-});
+const validationSchema = yup.object().shape(
+    {
+        name: yup.string().required('Name is required'),
+        description: yup.string(),
+        type: yup.string()
+            .required('Type is required')
+            .matches(/^(CAT|DOG)$/, 'Type must be CAT or DOG'),
+        dateOfBirth: yup.date().required('Date of Birth is required'),
+        rating: yup.number().min(0).max(10)
+    }
+);
 
 
 export const CreatePetModal = ({open, handleClose}) => {
@@ -52,17 +44,21 @@ export const CreatePetModal = ({open, handleClose}) => {
             description: '',
             dateOfBirth: '',
             type: PetType.CAT,
-            rating: '',
+            rating: 0,
         },
         validationSchema: validationSchema,
         onSubmit: async (values) => {
             console.log(values)
+            try{
+                const response = await axios.post("/api/pet/create", values)
+                toast.success(`${values.name} is added on list.`);
+                onClose();
+            } catch (err) {
+                toast.error(err?.response?.data?.message || "Failed to create new Pet");
+            }
         },
     });
-    const onCreate = async () => {
 
-        onClose();
-    }
 
     const onClose = () => {
         formik.setValues({
@@ -70,7 +66,7 @@ export const CreatePetModal = ({open, handleClose}) => {
             description: '',
             dateOfBirth: '',
             type: PetType.CAT,
-            rating: '',
+            rating: 0,
         });
         handleClose();
     }
@@ -82,29 +78,94 @@ export const CreatePetModal = ({open, handleClose}) => {
             aria-describedby="modal-modal-description"
         >
             <Fade in={open} timeout={500}>
-                <Stack direction={"column"} gap={2} sx={style}>
+                <Stack
+                    component={"form"}
+                    onSubmit={formik.handleSubmit}
+                    direction={"column"} gap={2} sx={style}>
                     <Typography variant={"h4"} fontWeight={"bold"} sx={{mb: 1}}>Create new project</Typography>
                     <TextField
+                        label={"Name"}
+                        name={"name"}
+                        type={"text"}
                         size={"small"}
-                        label={"Project name"}
-                        value={name}
-                        onChange={e => setName(e.target.value)}
+                        fullWidth
+                        InputProps={{ sx: {borderRadius: 6} }}
+                        value={formik.values.name}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        error={formik.touched.name && Boolean(formik.errors.name)}
+                        helperText={formik.touched.name && formik.errors.name}
                     />
                     <TextField
-                        size={"small"}
-                        rows={3}
-                        multiline
                         label={"Description"}
-                        value={description}
-                        onChange={e => setDescription(e.target.value)}
+                        name={"description"}
+                        type={"text"}
+                        size={"small"}
+                        fullWidth
+                        InputProps={{ sx: {borderRadius: 6} }}
+                        value={formik.values.description}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        error={formik.touched.description && Boolean(formik.errors.description)}
+                        helperText={formik.touched.description && formik.errors.description}
                     />
+                    <TextField
+                        label={"Birth"}
+                        name={"dateOfBirth"}
+                        type={"date"}
+                        size={"small"}
+                        fullWidth
+                        InputProps={{ sx: {borderRadius: 6} }}
+                        InputLabelProps={{shrink: true}}
+                        value={formik.values.dateOfBirth}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        error={formik.touched.dateOfBirth && Boolean(formik.errors.dateOfBirth)}
+                        helperText={formik.touched.dateOfBirth && formik.errors.dateOfBirth}
+                    />
+                    <FormControl>
+                        <InputLabel id="type-label">Type</InputLabel>
+                        <Select
+                            labelId={"type-label"}
+                            name={"type"}
+                            type={"text"}
+                            size={"small"}
+                            label={"Type"}
+                            fullWidth
+                            InputProps={{ sx: {borderRadius: 6} }}
+                            value={formik.values.type}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            error={formik.touched.type && Boolean(formik.errors.type)}
+                            helperText={formik.touched.type && formik.errors.type}
+                        >
+                            <MenuItem value={"none"}><em>None</em></MenuItem>
+                            <MenuItem value={PetType.DOG}>Dog</MenuItem>
+                            <MenuItem value={PetType.CAT}>Cat</MenuItem>
+                        </Select>
+                    </FormControl>
+                    {
+                        formik.values.type === PetType.DOG &&
+                        <TextField
+                            label={"Rating"}
+                            name={"rating"}
+                            type={"number"}
+                            size={"small"}
+                            fullWidth
+                            InputProps={{ sx: {borderRadius: 6} }}
+                            value={formik.values.rating}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            error={formik.touched.rating && Boolean(formik.errors.rating)}
+                            helperText={formik.touched.rating && formik.errors.rating}
+                        />
+                    }
                     <Stack direction={'row'} gap={1} useFlexGap flexWrap={"wrap"}>
                         <Button
                             variant={"contained"}
                             color={"secondary"}
+                            type={"submit"}
                             sx={{borderRadius: 5, textTransform: "capitalize"}}
-                            disabled={!name && !description}
-                            onClick={onCreate}
                         >
                             Save
                         </Button>

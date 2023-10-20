@@ -7,6 +7,7 @@ import com.example.petshopbackend.exceptions.RatingNotValidException;
 import com.example.petshopbackend.model.Pet;
 import com.example.petshopbackend.model.User;
 import com.example.petshopbackend.model.dto.PetCreationDto;
+import com.example.petshopbackend.model.dto.PetFilterDto;
 import com.example.petshopbackend.model.enums.PetType;
 import com.example.petshopbackend.repository.PetRepository;
 import com.example.petshopbackend.repository.UserRepository;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -43,8 +45,8 @@ public class PetServiceImpl implements PetService {
     }
 
     @Override
-    public Page<Pet> getPets(int page, int size) {
-        return petRepository.findAll(PageRequest.of(page, size));
+    public Page<Pet> getPets(int page, int size, PetFilterDto filterDto) {
+        return petRepository.searchPets(PageRequest.of(page, size), filterDto.getHasOwner(), filterDto.getName(), filterDto.getType(), filterDto.getPrice());
     }
 
     @Override
@@ -90,6 +92,12 @@ public class PetServiceImpl implements PetService {
         }
 
         return pet;
+    }
+
+    @Override
+    public List<Pet> getByOwner() {
+        User user = authService.getAuthUser();
+        return petRepository.findAllByOwnerId(user.getId());
     }
 
     private Pet mapPet(PetCreationDto petCreationDto, Pet pet) {

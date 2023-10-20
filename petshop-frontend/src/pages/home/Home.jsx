@@ -30,7 +30,7 @@ export const Home = () => {
     }, [filterParams?.page, filterParams?.size, filterParams.name, filterParams.hasOwner, filterParams.type, filterParams.price]);
 
     const fetchData = () => {
-        axios.get("/api/pet", {
+        axios.post("/api/pet", filterParams, {
             params: {
                 page: filterParams.page,
                 size: filterParams.size,
@@ -42,6 +42,10 @@ export const Home = () => {
                     const state = {...prev};
                     state.totalPages = response.data.totalPages;
                     state.totalElements = response.data.totalElements;
+                    console.log(state.page, state.totalPages);
+                    if (state.totalPages <= state.page) {
+                        state.page = 0
+                    }
                     return state;
                 })
             })

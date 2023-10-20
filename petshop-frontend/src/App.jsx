@@ -9,6 +9,7 @@ import {Register} from "./pages/register/Register.jsx";
 import {Home} from "./pages/home/Home.jsx";
 import {theme} from "./config/Theme";
 import 'react-toastify/dist/ReactToastify.css';
+import {MyPets} from "./pages/my-pets/MyPets.jsx";
 
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
                                         </>
                                         :
                                         <>
+                                            <Route path="/my-pets" index element={<MyPets/>}/>
                                             <Route path="*" element={<Navigate to="/"/>}/>
                                         </>
                                 }

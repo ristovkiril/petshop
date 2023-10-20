@@ -2,12 +2,15 @@ package com.example.petshopbackend.web;
 
 import com.example.petshopbackend.model.Pet;
 import com.example.petshopbackend.model.dto.PetCreationDto;
+import com.example.petshopbackend.model.dto.PetFilterDto;
 import com.example.petshopbackend.service.PetService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "/api/pet", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
@@ -20,12 +23,18 @@ public class PetController {
         return petService.getPet(id);
     }
 
-    @GetMapping
-    public Page<Pet> getPet(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
-        return petService.getPets(page, size);
+    @PostMapping
+    public Page<Pet> getPet(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, @RequestBody PetFilterDto filterDto) {
+        return petService.getPets(page, size, filterDto);
     }
 
-    @PostMapping
+    @GetMapping("/by-owner")
+    @PreAuthorize("isAuthenticated()")
+    public List<Pet> getPet() {
+        return petService.getByOwner();
+    }
+
+    @PostMapping("/create")
     @PreAuthorize("isAuthenticated()")
     public Pet create(@RequestBody PetCreationDto petCreationDto) {
         return petService.createPet(petCreationDto);

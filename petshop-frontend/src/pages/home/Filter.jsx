@@ -14,7 +14,7 @@ import React from "react";
 
 export const Filter = ({filterParams, setFilterParams}) => {
     return (
-        <Stack direction={"row"} gap={1.5} alignItems={"center"} useFlexGap flexWrap={"wrap"}>
+        <Stack direction={"row"} gap={1.5} alignItems={"flex-start"} useFlexGap flexWrap={"wrap"}>
             <TextField
                 size={"small"}
                 value={filterParams?.name}
@@ -34,7 +34,8 @@ export const Filter = ({filterParams, setFilterParams}) => {
                     sx={{borderRadius: 5}}
                     value={filterParams.type || "none"}
                     onChange={(e) => setFilterParams(prev => {
-                        return {...prev, type: e.target.value}
+                        const value = e.target.value === "none" ? null : e.target.value;
+                        return {...prev, type: value}
                     })}
                 >
                     <MenuItem value={"none"}><em>None</em></MenuItem>
@@ -48,7 +49,8 @@ export const Filter = ({filterParams, setFilterParams}) => {
                 value={filterParams?.price}
                 label={"Price"}
                 placeholder={"0"}
-                sx={{width: "5rem"}}
+                sx={{width: "7rem"}}
+                helperText={"Maximum price"}
                 InputProps={{sx: {borderRadius: 5}}}
                 onChange={(e) => setFilterParams(prev => {
                     return {...prev, price: e.target.value}

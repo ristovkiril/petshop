@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, {useContext, useState} from "react";
 import {Link, NavLink} from "react-router-dom";
 import {SignInContext} from "../context/SignInContext.jsx";
 import {
@@ -17,12 +17,18 @@ import {
 import logo from "/pet-logo.jpg"
 import {deepPurple} from "@mui/material/colors";
 import {IconLogout, IconPlus} from "@tabler/icons-react";
+import {CreatePetModal} from "./CreatePetModal.jsx";
 
 export const MainLayout = ({children}) => {
     const {isAuth, currentUser, onLogout} = useContext(SignInContext);
+    const [openCreateModal, setOpenCreateModal] = useState(false);
 
     return (
         <Stack direction={"column"} sx={{width: "100vw", height: "100dvh"}}>
+            <CreatePetModal
+                open={openCreateModal}
+                handleClose={() => setOpenCreateModal(false)}
+            />
             <Toolbar>
                 <Stack direction={"row"} gap={2} alignItems={"center"} justifyContent={"space-between"}
                        sx={{width: "100%"}}>
@@ -51,6 +57,7 @@ export const MainLayout = ({children}) => {
                                             borderRadius: 5,
                                             color: "#FFF !important"
                                         }}
+                                        onClick={() => setOpenCreateModal(true)}
                                     >
                                         <IconPlus size={15} style={{marginRight: 5}}/>
                                         Create Pet
