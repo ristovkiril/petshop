@@ -81,7 +81,7 @@ export const CreatePetModal = ({open, handleClose}) => {
                     component={"form"}
                     onSubmit={formik.handleSubmit}
                     direction={"column"} gap={2} sx={style}>
-                    <Typography variant={"h4"} fontWeight={"bold"} sx={{mb: 1}}>Create new project</Typography>
+                    <Typography variant={"h4"} fontWeight={"bold"} sx={{mb: 1}}>Add new Pet</Typography>
                     <TextField
                         label={"Name"}
                         name={"name"}

@@ -10,9 +10,11 @@ import axios from "../../axios/axios.jsx";
 import {Filter} from "./Filter.jsx";
 import {Pets} from "./Pets.jsx";
 import {toast} from "react-toastify";
+import {useNavigate} from "react-router-dom";
 
 export const Home = () => {
     const {isAuth, currentUser} = useContext(SignInContext);
+    const navigate = useNavigate();
     const [pets, setPets] = useState([]);
     const [filterParams, setFilterParams] = useState({
         hasOwner: false,
@@ -53,15 +55,19 @@ export const Home = () => {
     }
 
     const onBuyNow = (pet) => {
-        axios.post(`/api/pet/${pet?.id}/buy`)
-            .then((response) => {
-                toast.success("Congratulations you bought your pet!");
-                fetchData();
-            })
-            .catch(err => {
-                console.log(err?.response?.data?.message || "Failed to buy new Pet");
-                toast.error(err?.response?.data?.message || "Failed to buy new Pet");
-            });
+        if (isAuth) {
+            axios.post(`/api/pet/${pet?.id}/buy`)
+                .then((response) => {
+                    toast.success("Congratulations you bought your pet!");
+                    fetchData();
+                })
+                .catch(err => {
+                    console.log(err?.response?.data?.message || "Failed to buy new Pet");
+                    toast.error(err?.response?.data?.message || "Failed to buy new Pet");
+                });
+        } else {
+            navigate("/login")
+        }
     }
 
     return (
