@@ -51,6 +51,7 @@ export const Filter = ({filterParams, setFilterParams}) => {
                 placeholder={"0"}
                 sx={{width: "7rem"}}
                 helperText={"Maximum price"}
+                inputProps={{ min: 0 }}
                 InputProps={{sx: {borderRadius: 5}}}
                 onChange={(e) => setFilterParams(prev => {
                     return {...prev, price: e.target.value}

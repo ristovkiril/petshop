@@ -15,7 +15,7 @@ import {
     Typography
 } from "@mui/material";
 import logo from "/pet-logo.jpg"
-import {deepPurple} from "@mui/material/colors";
+import {deepPurple, grey} from "@mui/material/colors";
 import {IconLogout, IconMenu, IconPlus} from "@tabler/icons-react";
 import {CreatePetModal} from "./CreatePetModal.jsx";
 import {NavigationDrawer} from "./NavigationDrawer.jsx";
@@ -149,17 +149,20 @@ const UserMenu = ({currentUser, onLogout}) => {
                 onClose={handleClose}
             >
                 <List sx={{p: 0, minWidth: "170px", width: "100%"}}>
-                    <ListItem sx={{py: 0}}>
-                        <ListItemText
-                            primaryTypographyProps={{sx: {fontWeight: 700, fontSize: 17} }}
-                            primary={currentUser?.name && currentUser?.lastname && `${currentUser?.name} ${currentUser?.lastname}`}
-                        ></ListItemText>
-                    </ListItem>
-                    <ListItem sx={{py: 0}}>
-                        <ListItemText
-                            primaryTypographyProps={{sx: {fontWeight: 500, fontSize: 17} }}
-                            primary={`Budged (${currentUser?.budged})`}
-                        ></ListItemText>
+                    <ListItem sx={{pb: 2}}>
+                        <Stack direction={"row"} gap={2} alignItems={"center"}>
+                            <Avatar
+                                sx={{bgcolor: deepPurple[100], color: deepPurple[400]}}
+                            >
+                                {currentUser?.name && currentUser?.lastname && `${currentUser?.name[0]}${currentUser?.lastname[0]}`}
+                            </Avatar>
+                            <Box>
+                                <Typography fontWeight={700}
+                                            fontSize={15}>{`${currentUser?.name} ${currentUser?.lastname}`}</Typography>
+                                <Typography fontWeight={500} fontSize={13}
+                                            sx={{color: grey[500]}}>Budged: {currentUser?.budged}</Typography>
+                            </Box>
+                        </Stack>
                     </ListItem>
                     <ListItemButton
                         color={"secondary"}
