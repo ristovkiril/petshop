@@ -13,7 +13,7 @@ import {toast} from "react-toastify";
 import {useNavigate} from "react-router-dom";
 
 export const Home = () => {
-    const {isAuth, currentUser} = useContext(SignInContext);
+    const {isAuth, reloadUserData} = useContext(SignInContext);
     const navigate = useNavigate();
     const [pets, setPets] = useState([]);
     const [filterParams, setFilterParams] = useState({
@@ -57,9 +57,10 @@ export const Home = () => {
     const onBuyNow = (pet) => {
         if (isAuth) {
             axios.post(`/api/pet/${pet?.id}/buy`)
-                .then((response) => {
+                .then(async (response) => {
                     toast.success("Congratulations you bought your pet!");
                     fetchData();
+                    await reloadUserData();
                 })
                 .catch(err => {
                     console.log(err?.response?.data?.message || "Failed to buy new Pet");

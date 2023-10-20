@@ -9,6 +9,7 @@ export const TOKEN = "token"
 export const SignInContext = React.createContext({
   isAuth: null,
   currentUser: null,
+  reloadUserData: () => {},
   onLogin: () => {
   },
   onRegister: () => {
@@ -102,6 +103,7 @@ export const SignInContextProvider = props => {
       value={{
         isAuth: isAuth,
         currentUser: currentUser,
+        reloadUserData: checkIsAuth,
         onLogin: onLogin,
         onLogout: onLogout,
         onRegister: onRegister
